@@ -1,2 +1,2 @@
-File ../data/TC3/TC3.Sales.json Calculated in 0.0",
-            Total sales  165235.37
+File ../data/TC3/TC3.Sales.json Calculated in 0.0028679371",
+            Total sales  171055.35

@@ -158,11 +158,11 @@ def validate_sales(json_sales):
                                                 "quantity": int(quantity)})
             else:
                 if is_negative(quantity):
-                    quantity *= -1
                     print(
                         f"""negative number quantity found in {id_sale}
-                            quantity {quantity} replace by {quantity}"""
+                            quantity {quantity} replace by {-1 * quantity}"""
                     )
+                    quantity *= -1
                     new_json_sales[id_sale].append({"product": product,
                                                     "quantity": int(quantity)})
                 else:
@@ -243,10 +243,12 @@ def main():
     end_time = time.time()
     execute_time = end_time - start_time
     text_output = \
-        f"""File {file_sales} Calculated in {round(execute_time,2)}",
+        f"""File {file_sales} Calculated in {round(execute_time,10)}",
             Total sales {total_sales: 0.2f}"""
     output_file(text_output)
+    print("\n")
     print(text_output)
+    print("\n")
 
 
 if __name__ == "__main__":
