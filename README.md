@@ -10,9 +10,9 @@ Revisa las indicaciones para los programas a implementar:
 * Verifica la correcta ejecución de tus programas generando pruebas de cada ejercicio usando los recursos indicados. Documenta los resultados.
 * Instala el paquete flake8 usando PIP, https://luminousmen.com/post/python-static-analysis-toolsLinks to an external site. 
 * Si tienes dudas del uso, revisa el tutorial de Flake8: https://flake8.pycqa.org/en/latest/Links to an external site.
-- Verifica que tus programas no generen errores o problemas usando pylint:
+* Verifica que tus programas no generen errores o problemas usando pylint.
 
-           * The error code of flake8 are:
+- The error code of flake8 are:
 
            * E***/W***: Errors and warnings of pycodestyle
 
