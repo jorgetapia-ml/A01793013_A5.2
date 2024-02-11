@@ -21,3 +21,5 @@ done
 echo "-----------------------------------" | tee -a "$log_file"
 echo "----------------PyLint-------------------" | tee -a "$log_file"
 pylint computeSales.py | tee -a "$log_file"
+echo "----------------flake8-------------------" | tee -a "$log_file"
+flake8 computeSales.py | tee -a "$log_file"
