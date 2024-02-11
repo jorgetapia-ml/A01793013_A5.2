@@ -1,0 +1,24 @@
+Testing with catalog file: ../data/TC1/TC1.ProductList.json and sales file: ../data/TC1/TC1.Sales.json
+File ../data/TC1/TC1.Sales.json Calculated in 0.0",
+            Total sales  2481.86
+-----------------------------------
+Testing with catalog file: ../data/TC2/TC1.ProductList.json and sales file: ../data/TC2/TC2.Sales.json
+File ../data/TC2/TC2.Sales.json Calculated in 0.0",
+            Total sales  166568.23
+-----------------------------------
+Testing with catalog file: ../data/TC3/TC1.ProductList.json and sales file: ../data/TC3/TC3.Sales.json
+Product not in catalog Elotes
+Product not in catalog Frijoles
+File ../data/TC3/TC3.Sales.json Calculated in 0.0",
+            Total sales  165235.37
+-----------------------------------
+----------------PyLint-------------------
+************* Module computeSales
+computeSales.py:1:0: C0103: Module name "computeSales" doesn't conform to snake_case naming style (invalid-name)
+
+------------------------------------------------------------------
+Your code has been rated at 9.90/10 (previous run: 9.90/10, +0.00)
+
+----------------flake8-------------------
+computeSales.py:90:36: W291 trailing whitespace
+flake8 finish

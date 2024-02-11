@@ -5,6 +5,7 @@ import time
 import json
 from collections import defaultdict
 
+
 def open_json(file_name):
     """Open file and convert in a array
 
@@ -29,6 +30,8 @@ def open_json(file_name):
         return []
     json_loaded = json.loads(text)
     return json_loaded
+
+
 def validate_keys(product, keys):
     """
     Validates if the specified keys exist in a dictionary.
@@ -46,10 +49,11 @@ def validate_keys(product, keys):
         True if all specified keys exist in the dictionary, False otherwise.
     """
     check_keys = [(k, k in product.keys()) for k in keys]
-    for k,check in check_keys:
+    for k, check in check_keys:
         if not check:
             return False
     return True
+
 
 def is_valid_number(s):
     """
@@ -71,6 +75,23 @@ def is_valid_number(s):
     except ValueError:
         return False
 
+
+def is_negative(number):
+    """Check if negative the number
+
+    Parameters
+    ----------
+    number : float
+        number to check
+
+    Returns
+    -------
+    bool
+        boolean with the validation
+    """
+    return number < 0
+
+
 def validate_catalog(json_catalog):
     """
     Validates and filters a product catalog represented as a dictionary.
@@ -83,7 +104,8 @@ def validate_catalog(json_catalog):
     Returns
     -------
     dict
-        A new dictionary containing only valid entries from the original catalog.
+        A new dictionary containing only valid entries from the original
+        catalog.
     """
     new_json_catalog = {}
     for id_, product in enumerate(json_catalog):
@@ -96,11 +118,16 @@ def validate_catalog(json_catalog):
             if title not in new_json_catalog:
                 if is_valid_number(price):
                     new_json_catalog[title] = float(price)
+                elif is_negative(price):
+                    price *= -1
+                    new_json_catalog[title] = float(price)
+                    print(f"negative price found in {title}")
                 else:
                     print(f"not number type quantity found in {title}")
             else:
                 print(f"Product duplicated {title}")
     return new_json_catalog
+
 
 def validate_sales(json_sales):
     """
@@ -118,20 +145,36 @@ def validate_sales(json_sales):
     """
     new_json_sales = defaultdict(list)
     for id_, sale in enumerate(json_sales):
-        check = validate_keys(sale, ["Product", "Quantity","SALE_ID"])
+        check = validate_keys(sale, ["Product", "Quantity", "SALE_ID"])
         if not check:
-            print("id sale ignored", id_,  "product, Quantity and SALE_ID not found")
+            print("id sale ignored", id_,
+                  "product, Quantity and SALE_ID not found")
         else:
             product = sale["Product"]
             quantity = sale["Quantity"]
             id_sale = sale["SALE_ID"]
             if is_valid_number(quantity):
-                new_json_sales[id_sale].append({"product": product,"quantity": int(quantity)})
+                new_json_sales[id_sale].append({"product": product,
+                                                "quantity": int(quantity)})
             else:
-                print(f"not number type quantity found in {id_sale} replace by 0")
-                new_json_sales[id_sale].append({"product": product,"quantity": 0})
+                if is_negative(quantity):
+                    quantity *= -1
+                    print(
+                        f"""negative number quantity found in {id_sale}
+                            quantity {quantity} replace by {quantity}"""
+                    )
+                    new_json_sales[id_sale].append({"product": product,
+                                                    "quantity": int(quantity)})
+                else:
+                    print(
+                        f"""not number type quantity found in {id_sale}
+                            quantity {quantity} replace by 0"""
+                        )
+                    new_json_sales[id_sale].append({"product": product,
+                                                    "quantity": 0})
 
     return new_json_sales
+
 
 def calculate_sales(json_catalog, json_sales):
     """
@@ -152,8 +195,13 @@ def calculate_sales(json_catalog, json_sales):
     total_sales = 0
     for id_sale in json_sales:
         for product in json_sales[id_sale]:
-            total_sales += product["quantity"] * json_catalog[product["product"]]
+            product_name = product["product"]
+            if product_name in json_catalog:
+                total_sales += product["quantity"] * json_catalog[product_name]
+            else:
+                print(f"Product not in catalog {product_name}")
     return total_sales
+
 
 def output_file(file):
     """
@@ -167,9 +215,10 @@ def output_file(file):
     with open("SalesResults.txt", "w", encoding="utf8") as f:
         f.write(str(file))
 
+
 def main():
     """
-    Main function to run the sales computation 
+    Main function to run the sales computation
     process using specified catalog and sales files.
     """
     start_time = time.time()
@@ -194,10 +243,11 @@ def main():
     end_time = time.time()
     execute_time = end_time - start_time
     text_output = \
-        f"File {file_sales} Calculated in {execute_time}", f"Total sales {total_sales: 0.2f}"
+        f"""File {file_sales} Calculated in {round(execute_time,2)}",
+            Total sales {total_sales: 0.2f}"""
     output_file(text_output)
     print(text_output)
 
+
 if __name__ == "__main__":
     main()
-    
